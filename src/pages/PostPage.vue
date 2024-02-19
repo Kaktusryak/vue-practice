@@ -93,16 +93,17 @@ export default {
             isPostLoading:false,
             selectedSort:'',
             sortOptions:[
-                {value:'', name:'nothing'},
+                
                 {value:'title', name:'title'},
                 {value:'body', name:'body'},
                 
 
             ],
             searchQuery:'',
-            page:0,
+            page:1,
             limit:10,
-            totalPages:0
+            totalPages:0,
+            isWorking:false
             
             
         }
@@ -146,6 +147,8 @@ export default {
                     this.posts = response.data
                     this.isPostLoading=false
                     this.totalPages = Math.ceil(response.headers['x-total-count']/this.limit)
+                    this.isWorking=true
+                    this.page+=1
                 },300)
                 
                 
@@ -160,27 +163,31 @@ export default {
         //     // this.fetchPosts()
         // }
         async fetchMorePosts(){
-            try {
+            if(this.isWorking){
+                try {
                 
-                this.page+=1;
-                setTimeout(async()=>{
-                    const response = await axios.get('https://jsonplaceholder.typicode.com/posts',{
-                        params:{
-                            _page:this.page,
-                            _limit:this.limit
-                        }
-                    })
-                    this.posts = [...this.posts,...response.data]
                     
-                    this.totalPages = Math.ceil(response.headers['x-total-count']/this.limit)
-                },300)
+                    setTimeout(async()=>{
+                        const response = await axios.get('https://jsonplaceholder.typicode.com/posts',{
+                            params:{
+                                _page:this.page,
+                                _limit:this.limit
+                            }
+                        })
+                        this.posts = [...this.posts,...response.data]
+                    
+                        this.totalPages = Math.ceil(response.headers['x-total-count']/this.limit)
+                        this.page+=1;
+                    },300)
                 
                 
                 //console.log(response)
                 
-            } catch (error) {
-                alert('Error')
-            }finally{}
+                } catch (error) {
+                    alert('Error')
+                }finally{} 
+            }
+            
         },
         
 
@@ -228,6 +235,7 @@ export default {
             })
         },
         sortedAndSearchedPosts(){
+            console.log(this.sortedPosts)
             return this.sortedPosts.filter((item)=>item.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
         }
     }

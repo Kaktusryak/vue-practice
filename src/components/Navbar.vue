@@ -3,6 +3,8 @@
         <p class="pip">Navbar</p>
         <router-link to="/posts">Posts</router-link>
         <router-link to="/about">About</router-link>
+        <router-link to="/postsStore">Posts with store</router-link>
+        <router-link to="/postsComposition">Posts with composition</router-link>
         <router-link to="/">Home</router-link>
         <my-button class="btn" @click="$router.push('/')" style="color: rgb(0, 252, 134);">And this is the button</my-button>
     </div>

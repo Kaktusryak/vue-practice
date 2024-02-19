@@ -5,6 +5,7 @@
     </select>
 </template>
 <script>
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex"
 export default{
     name:'my-select',
     props:{
@@ -20,7 +21,12 @@ export default{
     methods:{
         changeOption(event){
             this.$emit('update:modelValue', event.target.value)
-        }
+            
+        },
+        
+    },
+    computed:{
+      
     }
 
 }
